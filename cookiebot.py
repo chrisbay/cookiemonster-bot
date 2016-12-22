@@ -10,11 +10,15 @@ def handle_command(command, channel):
 
     if "cookie" in command:
         gif_url = get_random_gif("cookie monster")
-        post_to_slack(channel, "did someone say COOKIE?!\n", gif_url)
+        try:
+            slack_client.api_call("chat.postMessage", channel=channel, text="did someone say COOKIE?!\n" + gif_url, as_user=True)
+        except Exception as e:
+            print str(e)
 
 
 def parse_slack_output(slack_rtm_output):
     output_list = slack_rtm_output
+    print output_list
     if output_list and len(output_list) > 0:
         for output in output_list:
             if output and 'text' in output and output['user'] != BOT_ID:
@@ -33,13 +37,11 @@ def get_random_gif(tag):
 
     return  data['data']['url']
 
-def post_to_slack(channel, msg, url=''):
-    slack_client.api_call("chat.postMessage", channel=channel, text=(msg + url), as_user=True)
 
 if __name__ == "__main__":
     READ_WEBSOCKET_DELAY = 1 # 1 second delay between reading from firehose
     if slack_client.rtm_connect():
-        print("StarterBot connected and running!")
+        print("CookieBot connected and running!")
         while True:
             command, channel = parse_slack_output(slack_client.rtm_read())
             if command and channel:
