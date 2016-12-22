@@ -7,11 +7,11 @@ BOT_ID = os.environ.get("SLACK_BOT_ID")
 slack_client = SlackClient(os.environ.get('SLACK_BOT_TOKEN'))
 
 def handle_command(command, channel):
-    
+
     if "cookie" in command:
         gif_url = get_random_gif("cookie monster")
         post_to_slack(channel, "did someone say COOKIE?!\n", gif_url)
-        
+
 
 def parse_slack_output(slack_rtm_output):
     output_list = slack_rtm_output
@@ -23,19 +23,18 @@ def parse_slack_output(slack_rtm_output):
     return None, None
 
 def get_random_gif(tag):
-    
+
     api_key = 'dc6zaTOxFJmzC'
     url = 'http://api.giphy.com/v1/gifs/random'
-        
+
     params = { 'api_key': api_key, 'tag': tag}
     resp = requests.get(url, params=params)
     data = resp.json()
-    
+
     return  data['data']['url']
-    
+
 def post_to_slack(channel, msg, url=''):
-    slack_client.api_call("chat.postMessage", channel=channel,
-                          text=msg + url, as_user=True)
+    slack_client.api_call("chat.postMessage", channel=channel, text=(msg + url), as_user=True)
 
 if __name__ == "__main__":
     READ_WEBSOCKET_DELAY = 1 # 1 second delay between reading from firehose
