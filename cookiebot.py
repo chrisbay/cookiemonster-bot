@@ -18,7 +18,6 @@ def handle_command(command, channel):
 
 def parse_slack_output(slack_rtm_output):
     output_list = slack_rtm_output
-    print output_list
     if output_list and len(output_list) > 0:
         for output in output_list:
             if output and 'text' in output and output['user'] != BOT_ID:
