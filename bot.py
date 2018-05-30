@@ -9,15 +9,11 @@ from slackclient import SlackClient
 
 
 BOT_ID = os.environ.get("SLACK_BOT_ID")
-SALLY_ID = 'U1ETR862K'
-CHRIS_ID = 'U0EGYEANB'
 slack_client = SlackClient(os.environ.get('SLACK_BOT_TOKEN'))
 
 
 def handle_command(command, channel, user):
-    if user == SALLY_ID:
-        post_to_slack(channel, "WHY YOU LEAVE SALLAMANDER?! THIS MAKE ME A SAD COOKIE :(")
-    elif "cake" in command:
+    if "cake" in command:
         gif_url = get_random_gif("cookie cake")
         post_to_slack(channel, "CAKE NOT AS GOOD AS COOKIE. MAYBE IT NUMBER 3 ALL-TIME DESSERT BEHIND COOKIE AND COOKIE CAKE\n", gif_url)
     elif is_mention(BOT_ID, command):
@@ -54,7 +50,7 @@ def post_to_slack(channel, msg, url=''):
 
 
 def parse_slack_output(slack_rtm_output):
-    print slack_rtm_output
+    print(slack_rtm_output)
     output_list = slack_rtm_output
     if output_list and len(output_list) > 0:
         for output in output_list:
