@@ -9,21 +9,20 @@ import slack
 
 
 BOT_ID = os.environ.get("SLACK_BOT_ID")
+GIPHY_KEY = os.environ.get("GIPHY_API_KEY")
 
 
 def get_random_gif(tag):
-    """ 
+    """
     Fetch a random GIF from Giphy using tag
     """
-    # api_key = 'dc6zaTOxFJmzC'
-    # url = 'http://api.giphy.com/v1/gifs/random'
-    # params = {'api_key': api_key, 'tag': tag}
-    # resp = requests.get(url, params=params)
-    # data = resp.json()
-    # print(data)
-    # return data['data']['url']
-    return ''
-    
+    url = 'http://api.giphy.com/v1/gifs/random'
+    params = {'api_key': GIPHY_KEY, 'tag': tag}
+    resp = requests.get(url, params=params)
+    data = resp.json()
+    print(data)
+    return data['data']['url']
+
 
 def is_mention(id, command):
     """
