@@ -20,7 +20,6 @@ def get_random_gif(tag):
     params = {'api_key': GIPHY_KEY, 'tag': tag}
     resp = requests.get(url, params=params)
     data = resp.json()
-    print(data)
     return data['data']['url']
 
 
@@ -28,16 +27,18 @@ def is_mention(id, command):
     """
     Return True if the user with ID id is mentioned in command
     """
-    return id.lower() in command
+    return id in command
 
 
 @slack.RTMClient.run_on(event='message')
 def handle_message(**payload):
     data = payload['data']
+    if 'type' in data or 'subtype' in data:
+        return
     command = data['text']
     channel_id = data['channel']
     thread_ts = data['ts']
-    user = data['user']
+    # user = data['user']
     msg = ''
 
     webclient = payload['web_client']
@@ -56,7 +57,7 @@ def handle_message(**payload):
             channel=channel_id,
             text=msg,
             thread_ts=thread_ts
-        )
+            )
 
 if __name__ == "__main__":
 
